@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import AuthForm from './pages/Authform';
+import { createContext, useState, useEffect } from 'react';
+import { lookInSession } from './common/Session';
 
-function App() {
-  const [count, setCount] = useState(0)
+export const UserContext = createContext();
+
+const App = () => {
+  const [userAuth, setUserAuth] = useState({});
+
+  useEffect(() => {
+    let userInSession = lookInSession('user');
+    console.log(userInSession);
+    userInSession
+      ? setUserAuth(JSON.parse(userInSession))
+      : setUserAuth({ access_token: null });
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <UserContext.Provider value={{ userAuth, setUserAuth }}>
+      <Routes>
+        <Route path='/' element={<Navbar />}>
+          <Route path='signin' element={<AuthForm type='signin' />}></Route>
+          <Route path='signup' element={<AuthForm type='signup' />}></Route>
+        </Route>
+      </Routes>
+    </UserContext.Provider>
+  );
+};
 
-export default App
+export default App;
