@@ -1,7 +1,7 @@
 import { getAuth } from 'firebase-admin/auth';
 import User from '../models/User.js';
-import { formatData } from '../Utils/FormatData.js';
-import { generateUsername } from '../Utils/GenerateUsername.js';
+import { formatData } from '../utils/FormatData.js';
+import { generateUsername } from '../utils/GenerateUsername.js';
 
 export const googleAuth = async (req, res) => {
   try {

@@ -1,15 +1,13 @@
 import bcrypt from 'bcrypt';
 import User from '../models/User.js';
-import { formatData } from '../Utils/FormatData.js';
-import { generateUsername } from '../Utils/GenerateUsername.js';
+import { formatData } from '../utils/FormatData.js';
+import { generateUsername } from '../utils/GenerateUsername.js';
 
 let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
 
-
-
 export const register = async (req, res) => {
-    let { fullname, email, password } = req.body;
+  let { fullname, email, password } = req.body;
 
   if (fullname.length < 3) {
     return res
@@ -52,4 +50,4 @@ export const register = async (req, res) => {
         return res.status(500).json({ error: 'An unexpected error occurred' });
       }
     });
-}
+};

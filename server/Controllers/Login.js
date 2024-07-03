@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import User from '../models/User.js';
-import { formatData } from '../Utils/FormatData.js';
+import { formatData } from '../utils/FormatData.js';
 
 export const login = (req, res) => {
   const { email, password } = req.body;
