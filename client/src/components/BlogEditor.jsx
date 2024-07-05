@@ -5,7 +5,7 @@ import PageAnimation from '../common/PageAnimation';
 import blogbanner from '../images/blogBanner.png';
 import { EditorContext } from '../pages/editorPages';
 import toast, { Toaster } from 'react-hot-toast';
-import {uploadImage} from '../common/cloudinary'
+import { uploadImage } from '../common/cloudinary';
 import EditorJS from '@editorjs/editorjs';
 import { tools } from '../components/Tools';
 
@@ -14,16 +14,21 @@ export default function BlogEditor() {
     blog,
     blog: { title, banner, content, tags, ref, des },
     setBlog,
+    textEditor,
+    setTextEditor,
+    setEditorState,
   } = useContext(EditorContext);
 
-    useEffect(() => {
-      let editor = new EditorJS({
+  useEffect(() => {
+    setTextEditor(
+      new EditorJS({
         holderId: 'textEditor',
-        data: '',
+        data: content,
         tools: tools,
         placeholder: 'Let write an awesome story',
-      });
-    }, []);
+      })
+    );
+  }, []);
 
   const handleChange = (e) => {
     let img = e.target.files[0];
@@ -65,6 +70,32 @@ export default function BlogEditor() {
 
     setBlog({ ...blog, title: input.value });
   };
+
+  const handlePublishEvent = () => {
+    if (!banner.length) {
+      return toast.error('Upload a blog banner to publish it');
+    }
+    if (!title.length) {
+      return toast.error('Write blog title to publish it');
+    }
+
+    if (textEditor.isReady) {
+      textEditor
+        .save()
+        .then((data) => {
+          // console.log(data)
+          if (data.blocks.length) {
+            setBlog({ ...blog, content: data });
+            setEditorState('publish');
+          } else {
+            return toast.error('Write something in your blog to publish it.');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
   return (
     <>
       <nav className='navbar'>
@@ -77,7 +108,12 @@ export default function BlogEditor() {
         </p>
 
         <div className='flex gap-4 ml-auto'>
-          <button className='btn-dark py-2 bg-primary '>Publish</button>
+          <button
+            className='btn-dark py-2 bg-primary'
+            onClick={handlePublishEvent}
+          >
+            Publish
+          </button>
           <button className='btn-light py-2'>Save Draft</button>
         </div>
       </nav>
