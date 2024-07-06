@@ -134,3 +134,30 @@ export const latestBlog = (req, res, next) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+export const trendingBlog = (req, res, next) => {
+  try {
+    let maxLimit = 5;
+    Blog.find({ draft: false })
+      .populate(
+        'author',
+        'personal_info.profile_img personal_info.fullname personal_info.username -_id'
+      )
+      .sort({
+        'activity.total_reads': -1,
+        'activity.total_likes': -1,
+        publishedAt: -1,
+      })
+      .select('blog_id title publishedAt -_id')
+      .limit(maxLimit)
+      .then((blogs) => {
+        return res.status(200).json({ blogs });
+      })
+      .catch((err) => {
+        next(new ErrorHanlder(500, err.message));
+      });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
