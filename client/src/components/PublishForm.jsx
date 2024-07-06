@@ -1,40 +1,100 @@
 import React, { useContext } from 'react';
-import PageAnimation from './../common/PageAnimation';
-import { toast, Toaster } from 'react-hot-toast';
+import PageAnimation from '../common/PageAnimation';
+import { Toaster, toast } from 'react-hot-toast';
 import { EditorContext } from '../pages/editorPages';
-import Tag from './Tags'
-export default function PublishForm() {
-    const charLength = 200;
-    const tagLimit = 10;
+import Tag from './Tags';
+import axios from 'axios';
+import { UserContext } from '../App';
+import { useNavigate, useParams } from 'react-router-dom';
+
+const PublishForm = () => {
+  const charLength = 200;
+  const tagLimit = 10;
+  const navigate = useNavigate();
+  const { blog_id } = useParams();
   let {
     blog: { banner, title, tags, des, content },
     setEditorState,
     setBlog,
     blog,
   } = useContext(EditorContext);
-
-    const handleBlogTitleChange = (e) => {
-      let input = e.target;
-      setBlog({ ...blog, title: input.value });
-    };
-
-      const handleKeyDown = (e) => {
-        if (e.keyCode === 13 || e.keyCode === 188) {
-          e.preventDefault();
-          let tag = e.target.value;
-          if (tags.length < tagLimit) {
-            if (!tags.includes(tag) && tag.length) {
-              setBlog({ ...blog, tags: [...tags, tag] });
-            }
-          } else {
-            toast.error(`You can add max ${tagLimit} tags`);
-          }
-          e.target.value = '';
-        }
-      };
-
+  // let {userAuth: {access_token}} = useContext(UserContext)
+  let {
+    userAuth: { access_token },
+  } = useContext(UserContext);
   const handleClose = () => {
     setEditorState('editor');
+  };
+  const handleBlogTitleChange = (e) => {
+    let input = e.target;
+    setBlog({ ...blog, title: input.value });
+  };
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13 || e.keyCode === 188) {
+      e.preventDefault();
+      let tag = e.target.value;
+      if (tags.length < tagLimit) {
+        if (!tags.includes(tag) && tag.length) {
+          setBlog({ ...blog, tags: [...tags, tag] });
+        }
+      } else {
+        toast.error(`You can add max ${tagLimit} tags`);
+      }
+      e.target.value = '';
+    }
+  };
+
+  const handlePublish = (e) => {
+    if (e.target.className.includes('disable')) {
+      return;
+    }
+    if (!title.length) {
+      return toast.error('Write Blog Title befor publising');
+    }
+    if (!des.length || des.length > charLength)
+      return toast.error(
+        `Write a description about your blog within ${charLength} characters to publish`
+      );
+    if (!tags.length || tags.length > 10) {
+      return toast.error(
+        `Write some tags about blog within ${tagLimit} taglimit to publish`
+      );
+    }
+
+    let loadingToast = toast.loading('Publishing...');
+
+    let blogObj = {
+      title,
+      banner,
+      des,
+      content,
+      tags,
+      draft: false,
+    };
+    e.target.classList.add('disable');
+    axios
+      .post(
+        import.meta.env.VITE_FRONTEND_URL + '/create-blog',
+        { ...blogObj, id: blog_id },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      )
+      .then(() => {
+        e.target.classList.remove('disable');
+        toast.dismiss(loadingToast);
+        toast.success('Published successfully');
+        setTimeout(() => {
+          navigate('/dashboard/blogs');
+        }, 5000);
+      })
+      .catch(({ response }) => {
+        e.target.classList.remove('disable');
+        toast.dismiss(loadingToast);
+        return toast.error(response.data.error);
+      });
   };
   return (
     <PageAnimation>
@@ -102,9 +162,13 @@ export default function PublishForm() {
           <p className='mt-1 pt-1 mb-4 text-dark-grey text-right '>
             {tagLimit - tags.length} Tags left
           </p>
-          <button className='btn-dark bg-primary px-8 '>Publish</button>
+          <button onClick={handlePublish} className='btn-dark px-8 '>
+            Publish
+          </button>
         </div>
       </section>
     </PageAnimation>
   );
-}
+};
+
+export default PublishForm;

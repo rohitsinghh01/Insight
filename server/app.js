@@ -9,6 +9,7 @@ import connectDB from './utils/dbconn.js';
 import { googleAuth } from './Controllers/GoogleAuth.js';
 import { v2 as cloudinary } from 'cloudinary';
 import fileUpload from 'express-fileupload';
+import BlogRouter from './routes/blogRoutes.js';
 const app = express();
 let PORT = process.env.PORT || 3000;
 
@@ -32,6 +33,7 @@ cloudinary.config({
 app.post('/signup', register);
 app.post('/signin', login);
 app.post('/google-auth', googleAuth);
+app.use(BlogRouter);
 
 app.post('/upload-image', async (req, res) => {
   try {
