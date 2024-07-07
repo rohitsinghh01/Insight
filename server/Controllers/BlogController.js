@@ -124,7 +124,6 @@ export const latestBlog = (req, res, next) => {
       .skip((page - 1) * maxLimit)
       .limit(maxLimit)
       .then((blogs) => {
-      // console.log(blogs);
         return res.status(200).json({ blogs });
       })
       .catch((err) => {
@@ -159,5 +158,95 @@ export const trendingBlog = (req, res, next) => {
       });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const searchBlog = (req, res, next) => {
+  try {
+    let { tag, page, query, author, limit, eliminate_blog } = req.body;
+    let findQuery;
+
+    if (tag && eliminate_blog) {
+      findQuery = {
+        draft: false,
+        $or: [
+          { tags: tag, blog_id: { $ne: eliminate_blog } },
+          { title: new RegExp(tag, 'i'), blog_id: { $ne: eliminate_blog } },
+        ],
+      };
+    } else if (tag) {
+      findQuery = { tags: tag, draft: false };
+    } else if (query) {
+      findQuery = {
+        draft: false,
+        $or: [{ title: new RegExp(query, 'i') }, { tags: query }],
+      };
+    } else if (author) {
+      findQuery = { author, draft: false };
+    }
+
+    let maxLimit = limit ? limit : 2;
+
+    Blog.find(findQuery)
+      .populate(
+        'author',
+        'personal_info.profile_img personal_info.fullname personal_info.username -_id'
+      )
+      .sort({ publishedAt: -1 })
+      .select('blog_id title des banner activity tags publishedAt -_id')
+      .skip((page - 1) * maxLimit)
+      .limit(maxLimit)
+      .then((blogs) => {
+        return res.status(200).json({ blogs });
+      })
+      .catch((err) => {
+        next(new ErrorHanlder(500, err.message));
+      });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const AllLatestBlogCount = (req, res) => {
+  try {
+    Blog.countDocuments({ draft: false })
+      .then((count) => {
+        return res.status(200).json({ totalDocs: count });
+      })
+      .catch((err) => {
+        return res.status(500).json({ error: err.message });
+      });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const searchBlogsCount = (req, res) => {
+  try {
+    let { tag, query, author } = req.body;
+    let findQuery;
+    if (tag) {
+      findQuery = { tags: tag, draft: false };
+    } else if (query) {
+      findQuery = {
+        draft: false,
+        $or: [{ title: new RegExp(query, 'i') }, { tags: query }],
+      };
+    } else if (author) {
+      findQuery = { author, draft: false };
+    }
+    // let findQuery = { tags: tag, draft: false}
+    // console.log(tag)
+
+    Blog.countDocuments(findQuery)
+      .then((count) => {
+        // console.log(count)
+        return res.status(200).json({ totalDocs: count });
+      })
+      .catch((err) => {
+        return res.status(500).json({ error: err.message });
+      });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 };
