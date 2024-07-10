@@ -20,5 +20,6 @@ BlogRouter.get('/trending-blog', trendingBlog);
 BlogRouter.post('/search-blogs', searchBlog);
 BlogRouter.post('/all-latest-blogs-count', AllLatestBlogCount);
 BlogRouter.post('/all-search-blogs-count', searchBlogsCount);
+BlogRouter.post('/get-blog', getBlog);
 
 export default BlogRouter;
