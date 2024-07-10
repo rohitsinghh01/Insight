@@ -1,8 +1,10 @@
-import { useContext, useState, createContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../App';
+import { Navigate, useParams } from 'react-router-dom';
 import BlogEditor from '../components/BlogEditor';
 import PublishForm from '../components/PublishForm';
+import Loader from '../components/Loader';
+import axios from 'axios';
 
 const blogStructure = {
   title: '',
@@ -16,13 +18,36 @@ const blogStructure = {
 export const EditorContext = createContext({});
 
 const Editor = () => {
+  let { blog_id } = useParams();
   const [blog, setBlog] = useState(blogStructure);
   const [editorState, setEditorState] = useState('editor');
   const [textEditor, setTextEditor] = useState({ isReady: false });
   let {
     userAuth: { access_token },
   } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   // console.log(access_token)
+
+  useEffect(() => {
+    if (!blog_id) {
+      return setLoading(false);
+    }
+    axios
+      .post(import.meta.env.VITE_FRONTEND_URL + '/get-blog', {
+        blog_id,
+        draft: true,
+        mode: 'edit',
+      })
+      .then(({ data: { blog } }) => {
+        setBlog(blog);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setBlog(null);
+        setLoading(false);
+        console.log(false);
+      });
+  }, []);
   return (
     <EditorContext.Provider
       value={{
@@ -34,9 +59,11 @@ const Editor = () => {
         setTextEditor,
       }}
     >
-      {access_token === null ? (
+      {access_token === null || undefined ? (
         <Navigate to='/signin' />
-      ) : editorState == 'editor' ? (
+      ) : loading ? (
+        <Loader />
+      ) : editorState === 'editor' ? (
         <BlogEditor />
       ) : (
         <PublishForm />
@@ -44,4 +71,5 @@ const Editor = () => {
     </EditorContext.Provider>
   );
 };
+
 export default Editor;

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { BlogContext } from '../pages/blog.page';
+import { BlogContext } from '../pages/BlogPage';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
 import { Toaster, toast } from 'react-hot-toast';
@@ -34,7 +34,7 @@ const BlogInteraction = () => {
 
       axios
         .post(
-          import.meta.env.VITE_SERVER_DOMAIN + '/isLiked-by-user',
+          import.meta.env.VITE_FRONTEND_URL + '/isLiked-by-user',
           { _id },
           {
             headers: {
@@ -59,7 +59,7 @@ const BlogInteraction = () => {
       setBlog({ ...blog, activity: { ...activity, total_likes } });
       axios
         .post(
-          import.meta.env.VITE_SERVER_DOMAIN + '/like-blog',
+          import.meta.env.VITE_FRONTEND_URL + '/like-blog',
           {
             _id,
             isLikedByUser,
@@ -71,7 +71,7 @@ const BlogInteraction = () => {
           }
         )
         .then(({ data }) => {
-          console.log(data);
+          // console.log(data);
         })
         .catch((err) => {
           console.log(err);

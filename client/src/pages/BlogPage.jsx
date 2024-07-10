@@ -7,9 +7,7 @@ import { getDay } from '../common/date';
 import BlogInteraction from '../components/BlogInteraction';
 import BlogPostCard from '../components/BlogPostCard';
 import BlogContent from '../components/BlogContent';
-import CommentContainer, {
-  fetchComment,
-} from '../components/';
+import CommentContainer, { fetchComment } from '../components/Comments';
 
 export const blogStructure = {
   title: '',
@@ -44,7 +42,7 @@ const BlogPage = () => {
 
   const fetchBlog = () => {
     axios
-      .post(import.meta.env.VITE_SERVER_DOMAIN + '/get-blog', { blog_id })
+      .post(import.meta.env.VITE_FRONTEND_URL + '/get-blog', { blog_id })
       .then(async ({ data: { blog } }) => {
         blog.comments = await fetchComment({
           blog_id: blog._id,
@@ -54,7 +52,7 @@ const BlogPage = () => {
         setBlog(blog);
 
         axios
-          .post(import.meta.env.VITE_SERVER_DOMAIN + '/search-blogs', {
+          .post(import.meta.env.VITE_FRONTEND_URL + '/search-blogs', {
             tag: blog.tags[0],
             limit: 6,
             eliminate_blog: blog_id,
@@ -148,7 +146,7 @@ const BlogPage = () => {
                 </h1>
                 {similarBlog &&
                   similarBlog.map((blog, i) => {
-                    console.log(blog);
+                    // console.log(blog);
                     let {
                       author: { personal_info },
                     } = blog;
@@ -171,5 +169,6 @@ const BlogPage = () => {
     </AnimationWrapper>
   );
 };
+
 
 export default BlogPage;

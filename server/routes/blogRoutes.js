@@ -7,6 +7,12 @@ import {
   searchBlogsCount,
   AllLatestBlogCount,
   getBlog,
+  likeBlog,
+  isLikedByUser,
+  AddComment,
+  getBlogComments,
+  getReplies,
+  deleteComment,
 } from '../Controllers/BlogController.js';
 import { verifyToken } from '../middleware/verifyUser.js';
 
@@ -22,5 +28,11 @@ BlogRouter.post('/search-blogs', searchBlog);
 BlogRouter.post('/all-latest-blogs-count', AllLatestBlogCount);
 BlogRouter.post('/all-search-blogs-count', searchBlogsCount);
 BlogRouter.post('/get-blog', getBlog);
+BlogRouter.post('/like-blog', verifyToken, likeBlog);
+BlogRouter.post('/isLiked-by-user', verifyToken, isLikedByUser);
+BlogRouter.post('/add-comment', verifyToken, AddComment);
+BlogRouter.post('/get-blog-comments', getBlogComments);
+BlogRouter.post('/get-replies', getReplies);
+BlogRouter.post('/delete-comment', verifyToken, deleteComment);
 
 export default BlogRouter;
