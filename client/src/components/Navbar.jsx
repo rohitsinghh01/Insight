@@ -1,10 +1,13 @@
 import React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import logo from '../images/logo.png';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { UserContext } from '../App';
 import UserNavigation from './UserNavigation';
+import axios from 'axios';
 
 export default function Navbar() {
+   const navigate = useNavigate();
   const [searchVisible, setsearchVisible] = React.useState(false);
   const [UserNavigationPanel, setUserNavigationPanel] = React.useState(false);
   const {
@@ -15,6 +18,12 @@ export default function Navbar() {
     setTimeout(() => {
       setUserNavigationPanel(false);
     }, 200);
+  };
+  const handleChange = (e) => {
+    let query = e.target.value;
+    if (e.keyCode === 13 && query.length) {
+      navigate(`/search/${query}`);
+    }
   };
 
   return (
@@ -34,6 +43,7 @@ export default function Navbar() {
             type='text'
             placeholder='Search'
             className='w-full md:w-auto bg-grey p-4 pl-16 pr-[12%] md:pr-6 rounded-full placeholder:text-dark-grey md:pl-12'
+            onKeyDown={handleChange}
           />
           <i className='fi fi-rr-search absolute right-[10%] md:pointer-events-none md:left-5 top-1/2 -translate-y-1/2 text-xl text-dark-grey' />
         </div>
