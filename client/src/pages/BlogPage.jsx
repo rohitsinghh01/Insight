@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import AnimationWrapper from '../common/page-animation';
-import Loader from '../components/loader.component';
+import AnimationWrapper from '../common/PageAnimation';
+import Loader from '../components/Loader';
 import { getDay } from '../common/date';
-import BlogInteraction from '../components/blog-interaction.component';
-import BlogPostCard from '../components/blog-post.component';
-import BlogContent from '../components/blog-content.component';
+import BlogInteraction from '../components/BlogInteraction';
+import BlogPostCard from '../components/BlogPostCard';
+import BlogContent from '../components/BlogContent';
 import CommentContainer, {
   fetchComment,
-} from '../components/comments.component';
+} from '../components/';
 
 export const blogStructure = {
   title: '',

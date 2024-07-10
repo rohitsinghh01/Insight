@@ -6,6 +6,7 @@ import {
   trendingBlog,
   searchBlogsCount,
   AllLatestBlogCount,
+  getBlog,
 } from '../Controllers/BlogController.js';
 import { verifyToken } from '../middleware/verifyUser.js';
 

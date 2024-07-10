@@ -31,7 +31,7 @@ const BlogInteraction = () => {
 
   useEffect(() => {
     if (access_token) {
-      // make request to server to get like requrest
+
       axios
         .post(
           import.meta.env.VITE_SERVER_DOMAIN + '/isLiked-by-user',
