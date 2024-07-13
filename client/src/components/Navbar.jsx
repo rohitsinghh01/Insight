@@ -28,7 +28,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className='navbar'>
+      <nav className='navbar z-50'>
         <Link to='/' className='flex-none'>
           <img src={logo} alt='logo img' className='h-30 w-36' />
         </Link>
