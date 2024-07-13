@@ -1,33 +1,42 @@
-import React from 'react';
+import { useState } from 'react';
 
-export default function InputBox({ name, type, id, value, placeholder, icon }) {
-  const [passwordVisible, setPasswordvisible] = React.useState(false);
+const InputBox = ({
+  name,
+  type,
+  id,
+  value,
+  placeholder,
+  icon,
+  disable = false,
+}) => {
+  const [passwordVisible, setPasswordVisible] = useState(false);
   return (
-    <div className='relative w-[100%] mb-4'>
+    <div className='relative w-[100%] mb-4 '>
       <input
         name={name}
         type={
-          type === 'password' ? (passwordVisible ? 'text' : 'password') : 'text'
+          type === 'password' ? (passwordVisible ? 'text' : 'password') : type
         }
         placeholder={placeholder}
-        id={id}
         defaultValue={value}
+        id={id}
+        disabled={disable}
         className='input-box'
       />
       <i className={'fi ' + icon + ' input-icon'}></i>
-
-      {type == 'password' ? (
+      {type === 'password' ? (
         <i
           className={
             'fi fi-rr-eye' +
             (!passwordVisible ? '-crossed' : '') +
-            ' input-icon left-auto right-4 cursor-pointer'
+            ' input-icon left-[auto] right-4 cursor-pointer'
           }
-          onClick={() => setPasswordvisible((currval) => !currval)}
-        />
+          onClick={() => setPasswordVisible((currVal) => !currVal)}
+        ></i>
       ) : (
         ''
       )}
     </div>
   );
-}
+};
+export default InputBox;

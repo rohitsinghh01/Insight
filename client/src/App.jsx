@@ -11,6 +11,7 @@ import ProfilePage from './pages/ProfilePage';
 import BlogPage from './pages/BlogPage';
 import SideNav from './components/SideNav';
 import ChangePassword from './pages/ChangePassword';
+import EditProfile from './pages/EditProfile';
 
 export const UserContext = createContext();
 
