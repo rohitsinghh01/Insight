@@ -15,6 +15,7 @@ import {
   deleteComment,
   userWrittenUserCount,
   userWrittenUser,
+  deleteBlog,
 } from '../Controllers/BlogController.js';
 import { verifyToken } from '../middleware/verifyUser.js';
 
@@ -38,4 +39,5 @@ BlogRouter.post('/get-replies', getReplies);
 BlogRouter.post('/delete-comment', verifyToken, deleteComment);
 BlogRouter.post('/user-written-blogs', verifyToken, userWrittenUser);
 BlogRouter.post('/user-written-blogs-count', verifyToken, userWrittenUserCount);
+BlogRouter.post('/delete-blog', verifyToken, deleteBlog);
 export default BlogRouter;
