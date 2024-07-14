@@ -40,28 +40,26 @@ class CustomImageTool extends ImageTool {
       const response = await this.config.uploader.uploadByUrl(url);
 
       if (response.success && response.file && response.file.url) {
-        this.data.url = response.file.url; 
-        this.data.caption = ''; 
-        this.data.withBorder = false; 
-        this.data.withBackground = false; 
+        this.data.url = response.file.url;
+        this.data.caption = '';
+        this.data.withBorder = false;
+        this.data.withBackground = false;
 
-        // console.log('Uploaded image URL:', this.data.url); 
-
-        this.showImage(); 
+        this.showImage();
       } else {
         console.error('Image upload by URL failed:', response);
       }
     } catch (error) {
       console.error('Error uploading image by URL:', error);
     }
-  } 
+  }
 
   showImage() {
     if (this.data.url) {
       this.wrapper.innerHTML = '';
 
       const imageElement = document.createElement('img');
-      imageElement.src = this.data.url; 
+      imageElement.src = this.data.url;
       imageElement.alt = 'Image';
       imageElement.style.maxWidth = '100%';
 
@@ -79,12 +77,18 @@ class CustomImageTool extends ImageTool {
     const image = blockContent.querySelector('img');
     const caption = blockContent.querySelector('[contenteditable]');
 
-    return {
-      url: image ? image.src : '',
+    const data = {
+      file: {
+        url: image ? image.src : '',
+      },
       caption: caption ? caption.innerHTML : '',
       withBorder: this.data.withBorder,
       withBackground: this.data.withBackground,
+      stretched: this.data.stretched,
     };
+
+    // console.log('Saving image data:', data);
+    return data;
   }
 }
 

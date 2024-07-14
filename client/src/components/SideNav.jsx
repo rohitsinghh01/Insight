@@ -18,7 +18,7 @@ const SideNav = () => {
 
   const chagnePageState = (e) => {
     let { offsetWidth, offsetLeft } = e.target;
-    console.log(offsetLeft, offsetWidth);
+    // console.log(offsetLeft, offsetWidth);
     activeTabLine.current.style.width = offsetWidth + 'px';
     activeTabLine.current.style.left = offsetLeft + 'px';
 

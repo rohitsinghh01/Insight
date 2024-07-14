@@ -17,7 +17,7 @@ export default function Authform({ type }) {
 
   const userAuthfromSever = (serverRoute, data) => {
     axios
-      .post(import.meta.env.VITE_FRONTEND_URL + serverRoute, data)
+      .post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, data)
       .then(({ data }) => {
         storeInSession('user', JSON.stringify(data));
         setUserAuth(data);
@@ -123,8 +123,8 @@ export default function Authform({ type }) {
               autoComplete='off'
             />
 
-            <button className='btn-dark center mt-14 bg-primary' type='submit'>
-              Sign Up
+            <button className='btn-dark center mt-14 bg-black' type='submit'>
+              {type == 'signin' ? 'Sign In' : 'Sign Up'}
             </button>
 
             <div className='relative w-full flex items-center gap-2 my-10 opacity-10 uppercase text-primary font-bold'>
