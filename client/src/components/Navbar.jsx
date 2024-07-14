@@ -7,13 +7,19 @@ import UserNavigation from './UserNavigation';
 import axios from 'axios';
 
 export default function Navbar() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [searchVisible, setsearchVisible] = React.useState(false);
   const [UserNavigationPanel, setUserNavigationPanel] = React.useState(false);
   const {
     userAuth,
-    userAuth: { access_token, profile_img },
-  } = React.useContext(UserContext);
+    userAuth: { access_token, profile_img, new_notification_available },
+    setUserAuth,
+  } = useContext(UserContext);
+
+  const handleUserNavPanel = () => {
+    setUserNavPanel((currentVal) => !currentVal);
+  };
+
   const handleBlur = () => {
     setTimeout(() => {
       setUserNavigationPanel(false);
@@ -25,6 +31,23 @@ export default function Navbar() {
       navigate(`/search/${query}`);
     }
   };
+
+  useEffect(() => {
+    if (access_token) {
+      axios
+        .get(import.meta.env.VITE_FRONTEND_URL + '/new-notification', {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        })
+        .then(({ data }) => {
+          setUserAuth({ ...userAuth, ...data });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [access_token]);
 
   return (
     <>
@@ -62,32 +85,35 @@ export default function Navbar() {
 
           {access_token ? (
             <>
-              <Link to='/dashboard/notification'>
-                <button className='w-12 h-12 rounded-full bg-grey relative hover:bg-black/10'>
-                  <i className='fi fi-rr-bell text-2xl'></i>
+              <Link to='/dashboard/notifications'>
+                <button className='w-12 h-12 rounded-full bg-grey relative hover:bg-black/10 '>
+                  <i className='fi fi-rr-bell text2xl block mt-1'></i>
+                  {new_notification_available && (
+                    <span className='bg-red w-3 h-3 rounded-full  absolute z-10 top-2 right-2'></span>
+                  )}
                 </button>
               </Link>
-
-              <div className='relative' onBlur={handleBlur}>
-                <button className='w-12 h-12 mt-1'>
+              <div
+                className='relative'
+                onClick={handleUserNavPanel}
+                onBlur={handleBlur}
+              >
+                <button className='w-12 h-12 mt1'>
                   <img
                     src={profile_img}
+                    alt='Profile'
                     className='w-full h-full object-cover rounded-full'
-                    alt='profile img'
-                    onClick={() =>
-                      setUserNavigationPanel((currval) => !currval)
-                    }
                   />
-                  {UserNavigationPanel ? <UserNavigation /> : ''}
                 </button>
+                {userNavPanel && <UserNavigationPanel />}
               </div>
             </>
           ) : (
             <>
-              <Link className='btn-dark py-2 bg-primary ' to='signin'>
+              <Link className='btn-dark py-2 ' to='/signin'>
                 Sign In
               </Link>
-              <Link className='btn-light py-2 hidden md:block' to='signup'>
+              <Link className='btn-light py-2 hidden md:block' to='/signup'>
                 Sign Up
               </Link>
             </>

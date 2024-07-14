@@ -11,6 +11,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import fileUpload from 'express-fileupload';
 import BlogRouter from './routes/blogRoutes.js';
 import userRouter from './routes/userRoute.js';
+import notificationRouter from './routes/notification.js';
 
 const app = express();
 let PORT = process.env.PORT || 3000;
@@ -37,6 +38,7 @@ app.post('/signin', login);
 app.post('/google-auth', googleAuth);
 app.use(BlogRouter);
 app.use(userRouter);
+app.use(notificationRouter);
 
 app.post('/upload-image', async (req, res) => {
   try {
