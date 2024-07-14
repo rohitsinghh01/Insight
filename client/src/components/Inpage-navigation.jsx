@@ -53,7 +53,7 @@ const InPageNavigaion = ({
                 key={i}
                 className={
                   'p-4 px-5 capitalize ' +
-                  (inPageNavIndex === i ? 'text-primary font-bold ' : 'text-dark-grey ') +
+                  (inPageNavIndex === i ? 'text-black ' : 'text-dark-grey ') +
                   (defaultHidden.includes(route) ? ' md:hidden ' : ' ')
                 }
               >
@@ -63,7 +63,7 @@ const InPageNavigaion = ({
           })}
         <hr
           ref={activeTabLineRef}
-          className='absolute bottom-0 duration-300 border-primary'
+          className='absolute bottom-0 duration-300 border-black'
         />
       </div>
       {Array.isArray(children) ? children[inPageNavIndex] : children}

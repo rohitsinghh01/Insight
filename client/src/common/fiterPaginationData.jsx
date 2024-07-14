@@ -23,7 +23,7 @@ export const filterPaginationData = async ({
   } else {
     await axios
       .post(
-        import.meta.env.VITE_FRONTEND_URL + countRoute,
+        import.meta.env.VITE_SERVER_DOMAIN + countRoute,
         data_to_send,
         headers
       )

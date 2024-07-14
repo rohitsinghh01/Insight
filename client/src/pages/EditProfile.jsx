@@ -35,11 +35,11 @@ const EditProfile = () => {
     },
     social_links,
   } = profile;
-//   console.log(profile);
+  // console.log(profile);
   useEffect(() => {
     if (access_token) {
       axios
-        .post(import.meta.env.VITE_FRONTEND_URL + '/get-profile', {
+        .post(import.meta.env.VITE_SERVER_DOMAIN + '/get-profile', {
           username: userAuth.username,
         })
         .then(({ data }) => {
@@ -75,7 +75,7 @@ const EditProfile = () => {
           if (url) {
             axios
               .post(
-                import.meta.env.VITE_FRONTEND_URL + '/update-profile-img',
+                import.meta.env.VITE_SERVER_DOMAIN + '/update-profile-img',
                 { url },
                 {
                   headers: {
@@ -137,7 +137,7 @@ const EditProfile = () => {
     e.target.setAttribute('disabled', true);
     axios
       .post(
-        import.meta.env.VITE_FRONTEND_URL + '/update-profile',
+        import.meta.env.VITE_SERVER_DOMAIN + '/update-profile',
         {
           username,
           bio,

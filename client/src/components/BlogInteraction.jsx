@@ -34,7 +34,7 @@ const BlogInteraction = () => {
 
       axios
         .post(
-          import.meta.env.VITE_FRONTEND_URL + '/isLiked-by-user',
+          import.meta.env.VITE_SERVER_DOMAIN + '/isLiked-by-user',
           { _id },
           {
             headers: {
@@ -59,7 +59,7 @@ const BlogInteraction = () => {
       setBlog({ ...blog, activity: { ...activity, total_likes } });
       axios
         .post(
-          import.meta.env.VITE_FRONTEND_URL + '/like-blog',
+          import.meta.env.VITE_SERVER_DOMAIN + '/like-blog',
           {
             _id,
             isLikedByUser,

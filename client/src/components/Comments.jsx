@@ -15,7 +15,7 @@ export const fetchComment = async ({
   let res;
 
   await axios
-    .post(import.meta.env.VITE_FRONTEND_URL + '/get-blog-comments', {
+    .post(import.meta.env.VITE_SERVER_DOMAIN + '/get-blog-comments', {
       blog_id,
       skip,
     })

@@ -105,7 +105,7 @@ const CommentCard = ({ index, leftVal, commentData }) => {
     e.target.setAttribute('disabled', true);
     axios
       .post(
-        import.meta.env.VITE_FRONTEND_URL + '/delete-comment',
+        import.meta.env.VITE_SERVER_DOMAIN + '/delete-comment',
         { _id },
         {
           headers: {
@@ -131,7 +131,7 @@ const CommentCard = ({ index, leftVal, commentData }) => {
       hideReplies();
 
       axios
-        .post(import.meta.env.VITE_FRONTEND_URL + '/get-replies', {
+        .post(import.meta.env.VITE_SERVER_DOMAIN + '/get-replies', {
           _id: commentsArr[currentIndex]._id,
           skip,
         })

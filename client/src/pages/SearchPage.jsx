@@ -16,7 +16,7 @@ const SearchPage = () => {
   const [users, setUsers] = useState(null);
   const searchBlog = ({ page = 1, create_new_arr = false }) => {
     axios
-      .post(import.meta.env.VITE_FRONTEND_URL + '/search-blogs', {
+      .post(import.meta.env.VITE_SERVER_DOMAIN + '/search-blogs', {
         query,
         page,
       })
@@ -37,7 +37,7 @@ const SearchPage = () => {
   };
   const fetchUsers = () => {
     axios
-      .post(import.meta.env.VITE_FRONTEND_URL + '/search-users', { query })
+      .post(import.meta.env.VITE_SERVER_DOMAIN + '/search-users', { query })
       .then(({ data: { users } }) => {
         setUsers(users);
       })

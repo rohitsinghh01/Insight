@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import PageAnimation from '../common/PageAnimation';
+import AnimationWrapper from '../common/PageAnimation';
 import { Toaster, toast } from 'react-hot-toast';
 import { EditorContext } from '../pages/editorPages';
 import Tag from './Tags';
@@ -74,7 +74,7 @@ const PublishForm = () => {
     e.target.classList.add('disable');
     axios
       .post(
-        import.meta.env.VITE_FRONTEND_URL + '/create-blog',
+        import.meta.env.VITE_SERVER_DOMAIN + '/create-blog',
         { ...blogObj, id: blog_id },
         {
           headers: {
@@ -97,7 +97,7 @@ const PublishForm = () => {
       });
   };
   return (
-    <PageAnimation>
+    <AnimationWrapper>
       <section className='w-screen min-h-screen grid items-center lg:grid-cols-2 py-16 lg:gap-4'>
         <Toaster />
         <button
@@ -167,7 +167,7 @@ const PublishForm = () => {
           </button>
         </div>
       </section>
-    </PageAnimation>
+    </AnimationWrapper>
   );
 };
 

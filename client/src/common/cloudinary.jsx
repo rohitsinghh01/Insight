@@ -3,7 +3,7 @@ export const uploadImage = async (image) => {
     const formData = new FormData();
     formData.append('image', image);
     const res = await fetch(
-      `${import.meta.env.VITE_FRONTEND_URL}/upload-image`,
+      `${import.meta.env.VITE_SERVER_DOMAIN}/upload-image`,
       {
         method: 'POST',
         body: formData,
@@ -20,7 +20,7 @@ export const uploadImage = async (image) => {
 export const uploadImageByUrl = async (imageUrl) => {
   try {
     const res = await fetch(
-      `${import.meta.env.VITE_FRONTEND_URL}/upload-image-url`,
+      `${import.meta.env.VITE_SERVER_DOMAIN}/upload-image-url`,
       {
         method: 'POST',
         headers: {

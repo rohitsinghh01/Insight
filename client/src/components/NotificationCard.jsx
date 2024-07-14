@@ -41,7 +41,7 @@ const NotificationCard = ({ data, index, notificationState }) => {
     target.setAttribute('disabled', true);
     axios
       .post(
-        import.meta.env.VITE_FRONTEND_URL + '/delete-comment',
+        import.meta.env.VITE_SERVER_DOMAIN + '/delete-comment',
         { _id: comment_id },
         {
           headers: {

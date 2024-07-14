@@ -38,7 +38,7 @@ const CommentField = ({
     }
     axios
       .post(
-        import.meta.env.VITE_FRONTEND_URL + '/add-comment',
+        import.meta.env.VITE_SERVER_DOMAIN + '/add-comment',
         {
           _id,
           blog_author,
