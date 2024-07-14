@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import lightPageNotFountImg from '../images/404-light.png';
 import DarkPageNotFountImg from '../images/404-dark.png';
 
-import lightFullLogo from '../images/lightlogo.png';
-import darkFullLogo from '../images/darklogo.png';
+import darkFullLogo from '../images/lightlogo.png';
+import lightFullLogo from '../images/darklogo.png';
 import { Link } from 'react-router-dom';
 import { ThemeContext } from '../App';
 const PageNotFound = () => {
