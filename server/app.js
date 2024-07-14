@@ -12,6 +12,7 @@ import fileUpload from 'express-fileupload';
 import BlogRouter from './routes/blogRoutes.js';
 import userRouter from './routes/userRoute.js';
 import notificationRouter from './routes/notification.js';
+import { ErrorThrow } from './utils/error.js';
 
 const app = express();
 let PORT = process.env.PORT || 3000;
@@ -39,6 +40,7 @@ app.post('/google-auth', googleAuth);
 app.use(BlogRouter);
 app.use(userRouter);
 app.use(notificationRouter);
+app.use(ErrorThrow);
 
 app.post('/upload-image', async (req, res) => {
   try {

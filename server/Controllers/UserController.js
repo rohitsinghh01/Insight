@@ -45,19 +45,23 @@ export const changePassword = (req, res) => {
     !passwordRegex.test(currentPassword) ||
     !passwordRegex.test(newPassword)
   ) {
-    return res.status(403).json({
-      error:
-        'password should be 6 to 20 characters long with a numeric, 1 uppercase and 1 lowercase lettes',
-    });
+    return res
+      .status(403)
+      .json({
+        error:
+          'password should be 6 to 20 characters long with a numeric, 1 uppercase and 1 lowercase lettes',
+      });
   }
 
   User.findOne({ _id: req.user })
     .then((user) => {
       if (user.google_auth) {
-        return res.status(403).json({
-          error:
-            "You cannot change account's password because you logged in through google",
-        });
+        return res
+          .status(403)
+          .json({
+            error:
+              "You cannot change account's password because you logged in through google",
+          });
       }
 
       bcrypt.compare(
@@ -65,10 +69,12 @@ export const changePassword = (req, res) => {
         user.personal_info.password,
         (err, result) => {
           if (err) {
-            return res.status(500).json({
-              error:
-                'Some error occured while changing the password, please try again later',
-            });
+            return res
+              .status(500)
+              .json({
+                error:
+                  'Some error occured while changing the password, please try again later',
+              });
           }
 
           if (!result) {
@@ -89,10 +95,12 @@ export const changePassword = (req, res) => {
                 return res.status(200).json({ status: 'password changed' });
               })
               .catch((err) => {
-                return res.status(500).json({
-                  error:
-                    'Some error occured while saving the new password, please try again later',
-                });
+                return res
+                  .status(500)
+                  .json({
+                    error:
+                      'Some error occured while saving the new password, please try again later',
+                  });
               });
           });
         }
@@ -141,16 +149,20 @@ export const updateProfile = (req, res) => {
           !hostname.includes(`${socialLinksArr[i]}.com`) &&
           socialLinksArr[i] != 'website'
         ) {
-          return res.status(403).json({
-            error: `${socialLinksArr[i]} link is invalid. You must enter a valid link.`,
-          });
+          return res
+            .status(403)
+            .json({
+              error: `${socialLinksArr[i]} link is invalid. You must enter a valid link.`,
+            });
         }
       }
     }
   } catch (error) {
-    return res.status(500).json({
-      error: 'You must provide full social links with http(s) include',
-    });
+    return res
+      .status(500)
+      .json({
+        error: 'You must provide full social links with http(s) include',
+      });
   }
 
   let updateObj = {
